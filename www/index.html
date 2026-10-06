@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="theme-color" content="#101827">
+  <meta name="description" content="Daily Helper - everyday tools, calculators, money tools, time, calendar, notes, expenses, converters, QR tools and 21 languages.">
+
+  <title>Daily Helper</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f6f9;
+      color: #172033;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #101827;
+      color: white;
+      padding: 22px 16px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 28px;
+      margin-bottom: 6px;
+    }
+
+    header p {
+      font-size: 14px;
+      opacity: 0.85;
+    }
+
+    .language-bar {
+      padding: 12px 16px;
+      background: white;
+      border-bottom: 1px solid #ddd;
+      text-align: center;
+    }
+
+    .language-bar select {
+      width: 100%;
+      max-width: 420px;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+      background: white;
+    }
+
+    .ad-space {
+      margin: 12px 16px;
+      min-height: 60px;
+      border: 1px dashed #aaa;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #777;
+      background: #fff;
+      font-size: 13px;
+    }
+
+    main {
+      padding: 16px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .welcome {
+      background: white;
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+    }
+
+    .welcome h2 {
+      font-size: 20px;
+      margin-bottom: 6px;
+    }
+
+    .welcome p {
+      color: #667085;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .tools-title {
+      font-size: 19px;
+      margin: 8px 0 12px;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .tool {
+      border: none;
+      background: white;
+      border-radius: 16px;
+      min-height: 105px;
+      padding: 14px;
+      text-align: center;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+
+    .tool:active {
+      transform: scale(0.96);
+    }
+
+    .tool .icon {
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    .tool .name {
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .tool .desc {
+      font-size: 11px;
+      color: #777;
+      margin-top: 4px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px 16px;
+      color: #777;
+      font-size: 12px;
+    }
+
+    @media (min-width: 600px) {
+      .tools-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (min-width: 900px) {
+      .tools-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    /* Arabic / RTL support */
+    body.rtl {
+      direction: rtl;
+    }
+
+    body.rtl .tool {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>DAILY HELPER</h1>
+    <p>Everything you need for everyday life</p>
+  </header>
+
+  <div class="language-bar">
+    <select id="languageSelect" onchange="changeLanguage()">
+      <option value="en">🇬🇧 English</option>
+      <option value="hi">🇮🇳 हिन्दी</option>
+      <option value="ne">🇳🇵 नेपाली</option>
+      <option value="ar">🇸🇦 العربية</option>
+      <option value="zh">🇨🇳 中文</option>
+      <option value="ja">🇯🇵 日本語</option>
+      <option value="ko">🇰🇷 한국어</option>
+      <option value="ta">🇮🇳 தமிழ்</option>
+      <option value="ms">🇲🇾 Melayu</option>
+      <option value="id">🇮🇩 Indonesia</option>
+      <option value="th">🇹🇭 ไทย</option>
+      <option value="vi">🇻🇳 Tiếng Việt</option>
+      <option value="tl">🇵🇭 Filipino</option>
+      <option value="bn">🇧🇩 বাংলা</option>
+      <option value="ur">🇵🇰 اردو</option>
+      <option value="te">🇮🇳 తెలుగు</option>
+      <option value="mr">🇮🇳 मराठी</option>
+      <option value="gu">🇮🇳 ગુજરાતી</option>
+      <option value="es">🇪🇸 Español</option>
+      <option value="fr">🇫🇷 Français</option>
+      <option value="de">🇩🇪 Deutsch</option>
+    </select>
+  </div>
+
+  <div class="ad-space">
+    Advertisement
+  </div>
+
+  <main>
+
+    <section class="welcome">
+      <h2 id="welcomeTitle">Welcome to Daily Helper 👋</h2>
+      <p id="welcomeText">
+        Useful everyday tools in one simple app.
+      </p>
+    </section>
+
+    <h2 class="tools-title" id="toolsTitle">All Tools</h2>
+
+    <section class="tools-grid">
+
+      <button class="tool" onclick="openTool('money')">
+        <div class="icon">💰</div>
+        <div class="name">Money</div>
+        <div class="desc">Salary & finance</div>
+      </button>
+
+      <button class="tool" onclick="openTool('calculator')">
+        <div class="icon">🧮</div>
+        <div class="name">Calculator</div>
+        <div class="desc">Everyday calculations</div>
+      </button>
+
+      <button class="tool" onclick="openTool('loan')">
+        <div class="icon">🏠</div>
+        <div class="name">Home Loan</div>
+        <div class="desc">Loan & EMI</div>
+      </button>
+
+      <button class="tool" onclick="openTool('time')">
+        <div class="icon">⏰</div>
+        <div class="name">Time</div>
+        <div class="desc">Alarm & timer</div>
+      </button>
+
+      <button class="tool" onclick="openTool('calendar')">
+        <div class="icon">📅</div>
+        <div class="name">Calendar</div>
+        <div class="desc">Dates & planning</div>
+      </button>
+
+      <button class="tool" onclick="openTool('notes')">
+        <div class="icon">📝</div>
+        <div class="name">Notes</div>
+        <div class="desc">Save your notes</div>
+      </button>
+
+      <button class="tool" onclick="openTool('todo')">
+        <div class="icon">✅</div>
+        <div class="name">To-Do</div>
+        <div class="desc">Daily tasks</div>
+      </button>
+
+      <button class="tool" onclick="openTool('expenses')">
+        <div class="icon">💸</div>
+        <div class="name">Expenses</div>
+        <div class="desc">Track spending</div>
+      </button>
+
+      <button class="tool" onclick="openTool('currency')">
+        <div class="icon">💱</div>
+        <div class="name">Currency</div>
+        <div class="desc">Exchange converter</div>
+      </button>
+
+      <button class="tool" onclick="openTool('converter')">
+        <div class="icon">📏</div>
+        <div class="name">Converter</div>
+        <div class="desc">Units & measurements</div>
+      </button>
+
+      <button class="tool" onclick="openTool('age')">
+        <div class="icon">🎂</div>
+        <div class="name">Age Calculator</div>
+        <div class="desc">Calculate your age</div>
+      </button>
+
+      <button class="tool" onclick="openTool('percentage')">
+        <div class="icon">📊</div>
+        <div class="name">Percentage</div>
+        <div class="desc">Percent calculations</div>
+      </button>
+
+      <button class="tool" onclick="openTool('bill')">
+        <div class="icon">🧾</div>
+        <div class="name">Bill Split</div>
+        <div class="desc">Split bills easily</div>
+      </button>
+
+      <button class="tool" onclick="openTool('qr')">
+        <div class="icon">🔳</div>
+        <div class="name">QR Tools</div>
+        <div class="desc">Create & scan QR</div>
+      </button>
+
+      <button class="tool" onclick="openTool('language')">
+        <div class="icon">🌍</div>
+        <div class="name">Languages</div>
+        <div class="desc">21 languages</div>
+      </button>
+
+      <button class="tool" onclick="openTool('settings')">
+        <div class="icon">⚙️</div>
+        <div class="name">Settings</div>
+        <div class="desc">App settings</div>
+      </button>
+
+    </section>
+
+  </main>
+
+  <footer>
+    Daily Helper © 2026
+  </footer>
+
+  <script>
+    function openTool(tool) {
+      alert(
+        "The " +
+        tool +
+        " tool will be added in the next development step."
+      );
+    }
+
+    function changeLanguage() {
+      const language =
+        document.getElementById("languageSelect").value;
+
+      if (language === "ar" || language === "ur") {
+        document.body.classList.add("rtl");
+      } else {
+        document.body.classList.remove("rtl");
+      }
+
+      localStorage.setItem("daily_helper_language", language);
+
+      alert(
+        "Language selected: " +
+        document.getElementById("languageSelect")
+          .options[
+            document.getElementById("languageSelect").selectedIndex
+          ].text
+      );
+    }
+
+    window.onload = function () {
+      const saved =
+        localStorage.getItem("daily_helper_language");
+
+      if (saved) {
+        document.getElementById("languageSelect").value = saved;
+
+        if (saved === "ar" || saved === "ur") {
+          document.body.classList.add("rtl");
+        }
+      }
+    };
+  </script>
+
+</body>
+                                    </html>
