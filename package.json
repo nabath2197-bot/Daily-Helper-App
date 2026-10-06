@@ -1,0 +1,16 @@
+{
+  "name": "daily-helper-app",
+  "version": "1.0.0",
+  "description": "Daily Helper - an all-in-one everyday utility app with calculators, money tools, time, calendar, notes, expenses, converters, QR tools and 21 languages.",
+  "private": true,
+  "scripts": {
+    "build": "echo Daily Helper build"
+  },
+  "dependencies": {
+    "@capacitor/android": "^7.4.0",
+    "@capacitor/core": "^7.4.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.4.0"
+  }
+}
