@@ -1,0 +1,6 @@
+{
+  "appId": "com.nabath2197.dailyhelper",
+  "appName": "Daily Helper",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}
