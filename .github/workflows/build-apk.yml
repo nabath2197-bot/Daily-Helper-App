@@ -1,4 +1,4 @@
-name: Build Daily Helper APK
+name: Build Daily Helper Release
 
 on:
   workflow_dispatch:
@@ -40,14 +40,75 @@ jobs:
       - name: Make Gradle executable
         run: chmod +x android/gradlew
 
-      - name: Build Debug APK
+      - name: Generate upload keystore if needed
+        run: |
+          if [ -z "${{ secrets.KEYSTORE_BASE64 }}" ]; then
+            echo "No upload keystore secret found."
+            echo "Generating a temporary upload keystore for the first release build."
+
+            keytool -genkeypair \
+              -v \
+              -keystore upload-keystore.jks \
+              -alias dailyhelper \
+              -keyalg RSA \
+              -keysize 2048 \
+              -validity 10000 \
+              -storepass DailyHelperTemp123! \
+              -keypass DailyHelperTemp123! \
+              -dname "CN=Daily Helper, OU=App, O=Daily Helper, L=Qatar, ST=Qatar, C=QA"
+
+            base64 -w 0 upload-keystore.jks > keystore.base64
+          else
+            echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > upload-keystore.jks
+          fi
+
+      - name: Configure release signing
+        run: |
+          cat >> android/app/build.gradle <<'EOF'
+
+          android {
+              signingConfigs {
+                  release {
+                      storeFile file("../../upload-keystore.jks")
+                      storePassword System.getenv("KEYSTORE_PASSWORD")
+                      keyAlias System.getenv("KEY_ALIAS")
+                      keyPassword System.getenv("KEY_PASSWORD")
+                  }
+              }
+
+              buildTypes {
+                  release {
+                      signingConfig signingConfigs.release
+                  }
+              }
+          }
+          EOF
+
+      - name: Build Release AAB
+        env:
+          KEYSTORE_PASSWORD: DailyHelperTemp123!
+          KEY_ALIAS: dailyhelper
+          KEY_PASSWORD: DailyHelperTemp123!
         run: |
           cd android
-          ./gradlew assembleDebug --no-daemon
+          ./gradlew bundleRelease --no-daemon
 
-      - name: Upload APK
+      - name: Build Release APK
+        env:
+          KEYSTORE_PASSWORD: DailyHelperTemp123!
+          KEY_ALIAS: dailyhelper
+          KEY_PASSWORD: DailyHelperTemp123!
+        run: |
+          cd android
+          ./gradlew assembleRelease --no-daemon
+
+      - name: Upload Play Store AAB and APK
         uses: actions/upload-artifact@v4
         with:
-          name: Daily-Helper-debug-APK
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          name: Daily-Helper-Release
+          path: |
+            android/app/build/outputs/bundle/release/app-release.aab
+            android/app/build/outputs/apk/release/app-release.apk
+            upload-keystore.jks
+            keystore.base64
           if-no-files-found: error
